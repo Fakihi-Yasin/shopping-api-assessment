@@ -18,12 +18,14 @@ export class CartService {
     return this.cartRepo.save(this.cartRepo.create());
   }
 
+  // load cart with full relations then calculate total 
   async getCart(cartId: string): Promise<Cart & { total: number }> {
     const cart = await this.cartRepo.findOne({
       where: { id: cartId },
       relations: ['items', 'items.variant', 'items.variant.product'],
     });
     if (!cart) throw new NotFoundException(`Cart ${cartId} not found`);
+      // round to 2decimals to avoid floating point weirdness like 10.999999
     const total = cart.items.reduce((sum, item) => sum + Number(item.variant.price) * item.quantity, 0);
     return { ...cart, total: Number(total.toFixed(2)) };
   }
@@ -35,6 +37,7 @@ export class CartService {
     const variant = await this.variantRepo.findOne({ where: { id: dto.variantId } });
     if (!variant) throw new NotFoundException(`Variant ${dto.variantId} not found`);
 
+    // if same variant in cart, just bump the quantity instead of adding a new row
     const existing = cart.items.find((i) => i.variant.id === dto.variantId);
     if (existing) {
       existing.quantity += dto.quantity;

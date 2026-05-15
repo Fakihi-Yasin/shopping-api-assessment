@@ -15,6 +15,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       ? exception.getResponse()
       : null;
 
+    // try to pull a readable message out of the exception fall back to generic one
     const message = typeof exceptionResponse === 'object' && exceptionResponse !== null
       ? (exceptionResponse as any).message
       : exception instanceof Error

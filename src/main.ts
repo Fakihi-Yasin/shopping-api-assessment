@@ -7,6 +7,7 @@ import { GlobalExceptionFilter } from './common/filters/global-exception.filter'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // whitelist strips unknown fields, forbidNonWhitelisted throws if any extra field is sent
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
   app.useGlobalFilters(new GlobalExceptionFilter());
 

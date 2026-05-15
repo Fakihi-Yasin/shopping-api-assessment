@@ -18,6 +18,7 @@ export class OrderItem {
   @Column()
   variantValue!: string;
 
+  // store price as decimal with precision 10,2 to handle currencies correctly
   @Column('decimal', { precision: 10, scale: 2 })
   priceAtPurchase!: number;
 

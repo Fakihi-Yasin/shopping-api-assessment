@@ -18,6 +18,7 @@ export class OrdersService {
     const cart = await this.cartService.getCart(dto.cartId);
     if (!cart.items.length) throw new BadRequestException('Cart is empty');
 
+    // snapshot product info at purchase time so order stays accurate even if product changes later
     const items = cart.items.map((item) =>
       this.orderItemRepo.create({
         productName: item.variant.product.name,
