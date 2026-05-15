@@ -4,23 +4,23 @@ import { ProductVariant } from './product-variant.entity';
 @Entity()
 export class Product {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ nullable: true })
-  description: string;
+  description!: string;
 
   @Column()
-  category: string;
+  category!: string;
 
   @OneToMany(() => ProductVariant, (variant) => variant.product, { cascade: true })
-  variants: ProductVariant[];
+  variants!: ProductVariant[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

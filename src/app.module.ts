@@ -3,14 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
 import { CartModule } from './cart/cart.module';
-import { ProductsModule } from './products/products.module';
-import { CartModule } from './cart/cart.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    ProductsModule,
-    CartModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -26,6 +23,7 @@ import { CartModule } from './cart/cart.module';
     }),
     ProductsModule,
     CartModule,
+    OrdersModule,
   ],
 })
 export class AppModule {}
