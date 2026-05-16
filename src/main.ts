@@ -15,6 +15,7 @@ async function bootstrap() {
     .setTitle('Shopping API')
     .setDescription('Shopping & Order Management API')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, config));
 
