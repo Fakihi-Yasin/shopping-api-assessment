@@ -27,7 +27,6 @@ import { UsersModule } from './users/users.module';
     CartModule,
     OrdersModule,
     AuthModule,
-    AuthModule,
     UsersModule,
   ],
 })

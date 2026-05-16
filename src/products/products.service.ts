@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './product.entity';
 import { ProductVariant } from './product-variant.entity';
-import { CreateProductDto, UpdateProductDto } from './product.dto';
+import { CreateProductDto, UpdateProductDto, ProductQueryDto } from './product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -14,9 +14,16 @@ export class ProductsService {
     private readonly variantRepo: Repository<ProductVariant>,
   ) {}
 
-  findAll(category?: string): Promise<Product[]> {
+  async findAll(query: ProductQueryDto): Promise<{ data: Product[]; total: number; page: number; limit: number; totalPages: number }> {
+    const { category, page = 1, limit = 10 } = query;
     const where = category ? { category } : {};
-    return this.productRepo.find({ where, relations: ['variants'] });
+    const [data, total] = await this.productRepo.findAndCount({
+      where,
+      relations: ['variants'],
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return { data, total, page, limit, totalPages: Math.ceil(total / limit) };
   }
 
   async findOne(id: string): Promise<Product> {

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Patch, Delete, Param, Body, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
-import { CreateProductDto, UpdateProductDto } from './product.dto';
+import { CreateProductDto, UpdateProductDto, ProductQueryDto } from './product.dto';
 import { ProductResponse } from './product.response';
 
 @ApiTags('products')
@@ -10,11 +10,10 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List all products, optionally filter by category' })
-  @ApiQuery({ name: 'category', required: false })
+  @ApiOperation({ summary: 'List all products with pagination, optionally filter by category' })
   @ApiResponse({ status: 200, type: [ProductResponse] })
-  findAll(@Query('category') category?: string) {
-    return this.productsService.findAll(category);
+  findAll(@Query() query: ProductQueryDto) {
+    return this.productsService.findAll(query);
   }
 
   @Get(':id')
